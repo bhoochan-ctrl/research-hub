@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>软银集团公司研究报告</title>
+<script src="chartjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --navy: #1a237e; --blue: #283593; --light-blue: #e8eaf6;
+  --accent: #c62828; --green: #2e7d32; --orange: #e65100;
+  --gold: #ff8f00; --text: #212121; --text2: #424242;
+  --gray: #757575; --bg: #fafafa; --white: #fff;
+  --border: #e0e0e0; --table-hdr: #1565c0;
+  --table-alt1: #e3f2fd; --table-alt2: #f8f9fa;
+  --radius: 6px; --shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Helvetica Neue", sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.85;
+  font-size: 14px; -webkit-font-smoothing: antialiased;
+}
+.cover {
+  background: linear-gradient(135deg, #0d1b3e 0%, #1a237e 50%, #283593 100%);
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  text-align: center; color: white; padding: 40px 20px;
+  position:relative; overflow:hidden; padding-bottom:80px;
+}
+.cover::before {
+  content:''; position:absolute; top:-50%; right:-30%; width:600px; height:600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+  border-radius:50%;
+}
+.cover-inner { position:relative; z-index:1; max-width:720px; padding-bottom:20px; }
+.cover-badge {
+  display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25);
+  padding:4px 16px; border-radius:20px; font-size:12px; letter-spacing:2px; margin-bottom:20px;
+  backdrop-filter: blur(4px);
+}
+.cover h1 { font-size:36px; font-weight:800; letter-spacing:1px; margin-bottom:12px; }
+.cover h1 span { font-weight:300; font-size:26px; }
+.cover-sub { font-size:15px; opacity:0.8; margin-bottom:35px; }
+.cover-grid {
+  display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; max-width:560px; margin:0 auto 35px;
+}
+.cover-card {
+  background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.15);
+  border-radius:10px; padding:16px 12px; backdrop-filter: blur(4px);
+}
+.cover-card .label { font-size:11px; opacity:0.65; margin-bottom:4px; }
+.cover-card .value { font-size:18px; font-weight:700; }
+.cover-rating {
+  background: linear-gradient(135deg, #e65100 0%, #ff8f00 100%);
+  color:#fff; display:inline-block; padding:14px 40px; border-radius:12px;
+  font-size:22px; font-weight:800; box-shadow:0 4px 20px rgba(230,81,0,0.4);
+}
+.cover-rating small { display:block; font-size:11px; font-weight:400; opacity:0.85; margin-top:4px; }
+.cover-footer {
+  position:absolute; bottom:20px; left:0; right:0; text-align:center;
+  font-size:11px; opacity:0.45; letter-spacing:1px; z-index:2; pointer-events:none;
+}
+.container { max-width:960px; margin:0 auto; padding:50px 30px 80px; }
+.summary-box {
+  background:var(--white); border-radius:12px; box-shadow:var(--shadow);
+  padding:32px; margin-bottom:40px; border-left:4px solid var(--navy);
+}
+.summary-title { font-size:18px; font-weight:700; color:var(--navy); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+.summary-content { font-size:14px; line-height:1.85; color:var(--text2); }
+.summary-highlight {
+  background:linear-gradient(to right, #e8eaf6, transparent);
+  padding:16px 20px; border-radius:8px; margin-top:16px;
+  border-left:3px solid var(--blue);
+}
+.kpi-row { display:flex; gap:14px; margin:20px 0; flex-wrap:wrap; }
+.kpi-card {
+  flex:1; min-width:140px; background:var(--white); border-radius:10px;
+  padding:18px 16px; box-shadow:var(--shadow); text-align:center;
+  border-bottom:3px solid var(--table-hdr);
+}
+.kpi-card .k-val { font-size:24px; font-weight:800; color:var(--navy); }
+.kpi-card .k-label { font-size:11.5px; color:var(--gray); margin-top:4px; }
+.kpi-card.green-border { border-bottom-color: var(--green); }
+.kpi-card.gold-border  { border-bottom-color: var(--gold); }
+.kpi-card.red-border   { border-bottom-color: var(--accent); }
+.module-header {
+  display:flex; align-items:center; margin:45px 0 20px; gap:12px;
+}
+.module-tag {
+  background:var(--navy); color:white; font-size:11px; font-weight:700;
+  padding:5px 14px; border-radius:4px; letter-spacing:1px; white-space:nowrap;
+}
+.module-line { flex:1; height:1px; background:linear-gradient(to right, var(--border), transparent); }
+.module-title { font-size:19px; font-weight:700; color:var(--navy); }
+h2 { font-size:16px; font-weight:700; color:var(--blue); margin:28px 0 14px; padding-bottom:8px; border-bottom:2px solid var(--light-blue); }
+h3 { font-size:14px; font-weight:700; color:var(--text); margin:22px 0 10px; }
+h4 { font-size:13px; font-weight:600; color:var(--text2); margin:16px 0 8px; }
+p { margin:8px 0; color:var(--text2); line-height:1.85; text-align:justify; }
+ul, ol { margin:10px 0 10px 20px; }
+li { margin:5px 0; color:var(--text2); line-height:1.75; }
+blockquote {
+  background:var(--light-blue); border-left:4px solid var(--navy);
+  padding:16px 20px; margin:16px 0; border-radius:0 8px 8px 0;
+  font-style:normal; color:var(--navy);
+}
+blockquote strong { color:var(--accent); }
+.table-wrap { overflow-x:auto; margin:16px 0; border-radius:10px; box-shadow:var(--shadow); }
+table { width:100%; border-collapse:collapse; background:var(--white); font-size:13px; }
+thead th {
+  background:var(--table-hdr); color:white; font-weight:700; padding:11px 10px;
+  text-align:center; font-size:12px; letter-spacing:0.3px; white-space:nowrap;
+}
+tbody td {
+  padding:9px 10px; text-align:center; border-bottom:1px solid #eee;
+  color:var(--text2); font-size:12.5px;
+}
+tbody tr:nth-child(even) { background:var(--table-alt1); }
+tbody tr:hover { background:#bbdefb33; }
+tbody td:first-child { text-align:left; font-weight:600; color:var(--text); white-space:nowrap; }
+td.positive { color:var(--green)!important; font-weight:600; }
+td.negative { color:var(--accent)!important; font-weight:600; }
+td.neutral  { color:var(--orange)!important; font-weight:600; }
+hr { border:none; height:1px; background:linear-gradient(to right, var(--blue), transparent); margin:30px 0; }
+.chart-wrap {
+  background:var(--white); border-radius:10px; box-shadow:var(--shadow);
+  padding:20px 24px; margin:18px 0 24px;
+}
+.chart-title {
+  font-size:13.5px; font-weight:700; color:var(--navy); margin-bottom:14px;
+  display:flex; align-items:center; gap:8px;
+}
+.chart-title::before {
+  content:''; width:4px; height:16px; background:var(--gold); border-radius:2px;
+}
+.chart-canvas-wrap { position:relative; width:100%; aspect-ratio:16/9.5; overflow:hidden; min-height:280px; }
+.chart-canvas-wrap canvas { width:100%!important; max-width:100%!important; height:100%!important; display:block; }
+.chart-row { display:flex; gap:16px; margin:18px 0 24px; flex-wrap:nowrap; }
+.chart-row .chart-wrap { flex:1; margin:0; min-width:0; }
+.chart-note { font-size:11.5px; color:var(--gray); text-align:center; margin-top:10px; line-height:1.6; }
+.verdict-box {
+  background: linear-gradient(135deg, var(--navy), #303f9f);
+  color:white; border-radius:14px; padding:36px; margin:40px 0;
+  box-shadow:0 8px 30px rgba(26,35,126,0.3);
+}
+.verdict-box h2 { color:#fff; border-bottom-color:rgba(255,255,255,0.25); margin-top:0; }
+.verdict-box h3 { color:#fff; font-weight:700; }
+.verdict-box p { color:rgba(255,255,255,0.95); }
+.verdict-box li { color:rgba(255,255,255,0.95);}
+.verdict-table-wrap { margin:20px 0; }
+.verdict-table-wrap table { background:rgba(255,255,255,0.1); border-radius:8px; overflow:hidden; }
+.verdict-table-wrap thead th { background:rgba(255,255,255,0.2); color:#fff; }
+.verdict-table-wrap tbody td { color:rgba(255,255,255,0.95)!important; border-bottom-color:rgba(255,255,255,0.1); }
+.verdict-table-wrap tbody tr:nth-child(even) { background:rgba(255,255,255,0.06); }
+.disclaimer {
+  background:var(--bg); border:1px dashed var(--border);
+  padding:20px; border-radius:8px; margin-top:40px;
+  font-size:11.5px; color:var(--gray);
+}
+.footer {
+  text-align:center; padding:30px 0; font-size:11px; color:var(--gray);
+  border-top:1px solid var(--border); margin-top:50px;
+}
+@media(max-width:768px) {
+  .container { padding:30px 16px 60px; }
+  .cover h1 { font-size:26px; }
+  .cover-grid { grid-template-columns:repeat(2,1fr); }
+  .kpi-row { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ COVER ═════ -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-badge">BUY-SIDE RESEARCH REPORT</div>
+    <h1>SoftBank Group Corp. <span>(9984.T)</span><br>买方深度投资分析报告</h1>
+    <div class="cover-sub">SoftBank Group Corp. | 东京证券交易所 | 日本东京</div>
+    <div class="cover-grid">
+      <div class="cover-card"><div class="label">标的代码</div><div class="value">9984.T</div></div>
+      <div class="cover-card"><div class="label">最新收盘价</div><div class="value">¥5,424</div></div>
+      <div class="cover-card"><div class="label">总市值</div><div class="value">¥30.91万亿</div></div>
+      <div class="cover-card"><div class="label">Forward PE</div><div class="value">31.71x</div></div>
+      <div class="cover-card"><div class="label">OpenAI股权价值</div><div class="value">¥15.8万亿</div></div>
+      <div class="cover-card"><div class="label">报告日期</div><div class="value">2026-05-03</div></div>
+    </div>
+    <div class="cover-rating">
+      有条件看多
+      <small>Conditionally Bullish | 目标价 ¥8,000~¥10,000 (+48%~+84%)</small>
+    </div>
+  </div>
+  <div class="cover-footer">
+    数据来源：StockAnalysis / Quartr / CNBC / SoftBank官方公告 / NeoData
+  </div>
+</div>
+
+<!-- ═══════ BODY ═════ -->
+<div class="container">
+
+<!-- ═══════ EXECUTIVE SUMMARY ═══════ -->
+<div class="summary-box">
+  <div class="summary-title">核心结论摘要</div>
+  <div class="summary-content">
+    <h3 style="margin-top:0;color:var(--navy)">投资评级：<strong style="font-size:17px">有条件看多（Conditionally Bullish）— 条件显著收紧</strong></h3>
+    <p><strong>核心投资逻辑：</strong>SoftBank已将整张资产负债表押注AI——通过<strong>$646亿持有OpenAI 13%</strong>（组合最大资产，已超Arm），叠加Arm+电信双运营支柱，构成全球唯一集「AI龙头股权+AI IP基础设施+稳定现金流」于一身的上市载体。但集中度风险和债务杠杆的矛盾前所未有。</p>
+    <blockquote>
+      <strong>⚠ 最大风险：</strong><strong>$400亿/12个月无抵押过桥贷款</strong>是悬在软银头顶的达摩克利斯之剑——若OpenAI IPO因市场/监管原因延迟，软银可能被迫折价出售Arm或电信等核心资产来偿债，引发系统性估值坍塌。
+    </blockquote>
+    <div class="kpi-row">
+      <div class="kpi-card green-border"><div class="k-val">¥8,000-10,000</div><div class="k-label">12个月目标价</div></div>
+      <div class="kpi-card gold-border"><div class="k-val">+48~+84%</div><div class="k-label">上涨空间</div></div>
+      <div class="kpi-card red-border"><div class="k-val">3~5%</div><div class="k-label">建议仓位上限</div></div>
+      <div class="kpi-card"><div class="k-val">¥3,500</div><div class="k-label">止损线</div></div>
+    </div>
+    <div class="summary-highlight">
+      <strong>📌 核心跟踪指标（更新版）：</strong><br>
+      ① OpenAI IPO进展 — S-1于2026Q3前提交 ② $400亿贷款偿还计划 — 2027年3月前明确安排<br>
+      ③ Anthropic vs OpenAI增速对比 — OpenAI需维持&gt;20% QoQ ④ LTV比率 &lt;25% ⑤ Arm营收增速 &gt;20% YoY
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 一: BUSINESS MOAT ═══════ -->
+<div class="module-header">
+  <span class="module-tag">一</span>
+  <span class="module-title">业务模式与护城河 (Business Moat)</span>
+  <span class="module-line"></span>
+</div>
+
+<h3>1.1 核心业务构成（近年度营收拆解）</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>报告期</th><th>营收(¥亿)</th><th>同比增速</th><th>净利润(¥亿)</th><th>毛利率</th><th>营业利润率</th></tr></thead>
+<tbody>
+<tr><td>FY2021</td><td>56,282</td><td>-9.0%</td><td class="positive">49,580</td><td>51.1%</td><td>10.7%</td></tr>
+<tr><td>FY2022</td><td>62,215</td><td>+10.5%</td><td class="negative">-17,080</td><td>52.5%</td><td class="positive">11.5%</td></tr>
+<tr><td>FY2023</td><td>65,704</td><td>+5.6%</td><td class="negative">-10,063</td><td>50.7%</td><td>9.6%</td></tr>
+<tr><td>FY2024</td><td>67,565</td><td>+2.8%</td><td class="negative">-2,505</td><td>52.4%</td><td>8.3%</td></tr>
+<tr><td>FY2025</td><td>72,438</td><td>+7.2%</td><td class="positive">11,345</td><td>51.8%</td><td>10.1%</td></tr>
+<tr style="font-weight:700;background:#fff3e0"><td><strong>TTM</strong></td><td><strong>76,604</strong></td><td><strong>+8.6%</strong></td><td><strong style="color:var(--green)">36,717</strong></td><td>51.6%</td><td>7.5%⚠</td></tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:12px;color:var(--gray);margin-top:-8px;">注：TTM净利润中OpenAI相关投资收益占约¥2.8万亿(76%)；营业利润率7.5%为近5年最低</p>
+
+<h3>1.2 三支柱模型（含最新OpenAI敞口）</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>支柱</th><th>核心资产</th><th>公允价值(¥万亿)</th><th>占组合</th><th>战略定位</th></tr></thead>
+<tbody>
+<tr style="background:#fff3e0"><td><strong>⬆ AI投资(全新核心)</strong></td><td><strong>OpenAI 13%持股</strong></td><td><strong>¥15.8</strong></td><td><strong>~51%</strong></td><td>最大单一资产，已超越Arm</td></tr>
+<tr><td><strong>AI计算</strong></td><td>Arm 90%+Graphcore+Ampere</td><td>¥12-14</td><td>~40%</td><td>核心IP基础设施</td></tr>
+<tr><td><strong>电信</strong></td><td>SoftBank Corp.</td><td>¥6-7</td><td>~20%</td><td>现金牛，低增长</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>1.3 竞争优势量化验证</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>维度</th><th>数据</th><th>评估</th></tr></thead>
+<tbody>
+<tr><td>OpenAI持股稀缺性</td><td>全球唯一持有OpenAI两位数股权的上市公司(除微软外)</td><td class="positive">品类绝对稀缺</td></tr>
+<tr><td>Arm CPU IP市占率</td><td>手机~99%，数据中心~15%→30%+(2028E)</td><td class="positive">极强护城河</td></tr>
+<tr><td>整体组合规模</td><td>NAV ~¥31万亿(含OpenAI $8,400亿估)</td><td class="positive">全球最大科技投资载体</td></tr>
+</tbody>
+</table>
+</div>
+
+<hr/>
+
+<!-- ═══════ 二: INDUSTRY LANDSCAPE ═══════ -->
+<div class="module-header">
+  <span class="module-tag">二</span>
+  <span class="module-title">行业格局与空间 (Industry Landscape)</span>
+  <span class="module-line"></span>
+</div>
+
+<h3>2.1 行业周期判断</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>赛道</th><th>生命周期</th><th>CAGR</th><th>TAM</th></tr></thead>
+<tbody>
+<tr><td><strong>AI大模型</strong>（OpenAI）</td><td>高速成长（2030年盈亏平衡）</td><td>&gt;50%</td><td>$1万亿+(2030E)</td></tr>
+<tr><td><strong>AI半导体IP</strong>（Arm）</td><td>高速成长期</td><td>20%+</td><td>$2,500亿+</td></tr>
+<tr><td><strong>日本电信</strong></td><td>成熟期</td><td>1-2%</td><td>¥15万亿</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>2.2 核心竞争对手对标</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>对标维度</th><th><strong>SBG</strong></th><th>NVIDIA</th><th>微软</th><th>OpenAI</th></tr></thead>
+<tbody>
+<tr><td><strong>市值/估值</strong></td><td>$197B</td><td>$3,500B+</td><td>$3,000B+</td><td>$840B(私募)</td></tr>
+<tr><td><strong>毛利率</strong></td><td>51.6%</td><td>75%+</td><td>~70%</td><td>—(亏损)</td></tr>
+<tr><td><strong>Forward P/E</strong></td><td class="neutral">31.71x</td><td>30x+</td><td>28x+</td><td>—(亏损)</td></tr>
+<tr><td><strong>负债率</strong></td><td class="negative">67%</td><td>~25%</td><td>~30%</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+
+<hr/>
+
+<!-- ═══════ 三: FINANCIAL HEALTH ═══════ -->
+<div class="module-header">
+  <span class="module-tag">三</span>
+  <span class="module-title">财务健康检查 (Financial Health)</span>
+  <span class="module-line"></span>
+</div>
+
+<h3>3.1 核心指标趋势</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>指标(¥亿)</th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th>TTM</th><th>趋势</th></tr></thead>
+<tbody>
+<tr><td>营收</td><td>65,704</td><td>67,565</td><td>72,438</td><td>76,604</td><td class="positive">稳步增长</td></tr>
+<tr><td>归母净利润</td><td class="negative">-10,063</td><td class="negative">-2,505</td><td class="positive">11,345</td><td class="positive">36,717</td><td>⚠波动极大</td></tr>
+<tr><td>营业利润率</td><td>9.6%</td><td>8.3%</td><td>10.1%</td><td class="negative">7.5%</td><td class="negative">⬇ 下降</td></tr>
+<tr><td>EBITDA</td><td>15,262</td><td>14,186</td><td>15,966</td><td>14,674</td><td>稳定</td></tr>
+<tr><td>自由现金流</td><td class="positive">1,075</td><td class="negative">-3,721</td><td class="negative">-6,506</td><td class="negative">-13,960</td><td class="negative">⬇ 持续恶化</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>3.2 核心财务风险预警</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>风险科目</th><th>当前值</th><th>阈值</th><th>风险等级</th></tr></thead>
+<tbody>
+<tr><td><strong>$400亿过桥贷款(新增)</strong></td><td>12个月/无抵押</td><td>—</td><td class="negative">⚠ 最高优先级</td></tr>
+<tr><td>净债务</td><td>¥19.84万亿</td><td>—</td><td class="negative">⚠ 高</td></tr>
+<tr><td>利息/EBITDA</td><td>47%</td><td>&gt;40%高危</td><td class="negative">⚠ 高</td></tr>
+<tr><td>LTV</td><td>~25%（上限）</td><td>&lt;25%</td><td class="neutral">接近上限</td></tr>
+<tr><td>FCF为负</td><td>连续3年</td><td>—</td><td class="negative">⚠ 高</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote><strong>核心矛盾：</strong>¥19.84万亿净债务中最关键的是<strong>$400亿/12个月无抵押过桥贷款</strong>——这笔贷款的再融资安排直接决定了软银的未来走向。</blockquote>
+
+<hr/>
+
+<!-- ═══════ 四: GOVERNANCE ═══════ -->
+<div class="module-header">
+  <span class="module-tag">四</span>
+  <span class="module-title">管理层与公司治理 (Governance)</span>
+  <span class="module-line"></span>
+</div>
+
+<h3>4.1 资金来源与资本分配</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>资金来源</th><th>金额</th><th>详情</th></tr></thead>
+<tbody>
+<tr><td>清仓NVIDIA</td><td>$58.3亿</td><td>2025年10月全部卖出</td></tr>
+<tr><td>减持T-Mobile</td><td>$127.3亿</td><td>2025年6-12月</td></tr>
+<tr><td><strong>过桥贷款(核心)</strong></td><td><strong>$400亿/12个月</strong></td><td>JPMorgan/GS/Mizuho/SMBC/MUFG联合牵头，无抵押</td></tr>
+<tr><td><strong>合计已变现/融资</strong></td><td><strong>$585.6亿</strong></td><td>$185.6亿已变现+$400亿贷款</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>4.2 治理风险</h3>
+<ul>
+<li><strong>关键人风险双重叠加</strong>：孙正义(68岁) + Sam Altman——两个人的决策决定~¥30万亿市值走向</li>
+<li><strong>集中度风险史无前例</strong>：单一未盈利投资占组合50%+</li>
+<li><strong>微软治理纠纷</strong>：微软持股27%+抽成20%营收，结构极为复杂</li>
+<li><strong>接班问题</strong>：孙正义未明确指定接班人</li>
+</ul>
+
+<hr/>
+
+<!-- ═══════ 五: VALUATION ═══════ -->
+<div class="module-header">
+  <span class="module-tag">五</span>
+  <span class="module-title">估值与盈利预期 (Valuation)</span>
+  <span class="module-line"></span>
+</div>
+
+<h3>5.1 核心估值指标</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>指标</th><th>当前值</th><th>判断</th></tr></thead>
+<tbody>
+<tr><td><strong>P/E(TTM)</strong></td><td class="positive">8.46x</td><td>具迷惑性(含大量一次性投资收益)</td></tr>
+<tr><td><strong>Forward P/E</strong></td><td class="negative">31.71x</td><td>反映盈利回归运营性水平</td></tr>
+<tr><td><strong>P/B</strong></td><td>~1.69x</td><td>合理偏低</td></tr>
+<tr><td><strong>EV/EBITDA</strong></td><td class="negative">~37.6x</td><td>考虑债务后不便宜</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>5.2 修正版SOTP（单独列示OpenAI）</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>板块</th><th>公允价值(¥万亿)</th><th>估值方法</th><th>较初版</th></tr></thead>
+<tbody>
+<tr><td>SoftBank Corp.</td><td>6.0~7.0</td><td>EV/EBITDA 6.5x</td><td>—</td></tr>
+<tr><td>Arm(90%)</td><td>12.0~14.0</td><td>按市价+控制权溢价</td><td>—</td></tr>
+<tr style="background:#fff3e0"><td><strong>OpenAI股权(13%)</strong></td><td><strong>¥15.8</strong></td><td><strong>$8,400亿×13%×¥145/$</strong></td><td><strong>🆕 新增</strong></td></tr>
+<tr><td>VF其他投资</td><td>3.0~5.0</td><td>NAV-流动性折价</td><td>⬇ 从原¥10~12万亿调</td></tr>
+<tr style="font-weight:700;"><td><strong>总资产</strong></td><td><strong>36.8~41.8</strong></td><td></td><td></td></tr>
+<tr><td>净债务</td><td>(19.84)</td><td>含$400亿过桥贷款</td><td>—</td></tr>
+<tr style="font-weight:700;background:#e8eaf6"><td><strong>修正后SOTP净值</strong></td><td><strong>¥16.96~21.96</strong></td><td></td><td><strong>⬆ 大幅上调</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>5.3 预期差驱动的股价弹性</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>预期差</th><th>概率</th><th>对NAV影响</th><th>股价弹性</th></tr></thead>
+<tbody>
+<tr><td><strong>OpenAI IPO $8,400亿~$1万亿</strong></td><td>40%</td><td>+¥2~6万亿</td><td class="positive">+15~30%</td></tr>
+<tr><td>Arm数据中心份额30%+ by 2028</td><td>30%</td><td>+¥5~7万亿</td><td class="positive">+20~25%</td></tr>
+<tr><td>Anthropic竞争损害OpenAI</td><td>30%</td><td>-¥3~5万亿</td><td class="negative">-15~20%</td></tr>
+<tr><td><strong>$400亿过桥贷再融资危机</strong></td><td><strong>20%</strong></td><td><strong>-¥5~8万亿</strong></td><td class="negative"><strong>-25~40%</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<hr/>
+
+<!-- ═══════ 六: RISK FACTORS ═══════ -->
+<div class="module-header">
+  <span class="module-tag">六</span>
+  <span class="module-title">核心风险提示 (Risk Factors)</span>
+  <span class="module-line"></span>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>#</th><th>风险描述</th><th>概率</th><th>股价下行</th></tr></thead>
+<tbody>
+<tr><td><strong>R1</strong></td><td>AI估值泡沫系统性崩溃</td><td>20-30%</td><td class="negative">-50%</td></tr>
+<tr><td><strong>R2</strong></td><td>债务/利息成本危机（加息至1.5%+）</td><td>15-20%</td><td class="negative">-35%</td></tr>
+<tr><td><strong>R3</strong></td><td>关键资产归零（OpenAI/ARM/字节跳动）</td><td>10-15%</td><td class="negative">-60%</td></tr>
+<tr style="background:#ffebee"><td><strong>R4 🆕</strong></td><td><strong>OpenAI $400亿过桥再融资危机：若IPO延迟→被迫折价出售核心资产偿债</strong></td><td><strong>20-30%</strong></td><td class="negative"><strong>-40%</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>极端情景下行测算</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>情景</th><th>概率</th><th>条件</th><th>目标价</th><th>下行</th></tr></thead>
+<tbody>
+<tr><td>基准</td><td>40%</td><td>FY2026净利润¥1万亿，NAV维持</td><td>¥5,424</td><td>—</td></tr>
+<tr><td>温和悲观</td><td>30%</td><td>净利¥5,000亿，NAV-15%</td><td class="negative">¥3,800</td><td class="negative">-30%</td></tr>
+<tr><td>严重悲观</td><td>20%</td><td>VF亏损+利息危机，NAV-30%</td><td class="negative">¥2,500</td><td class="negative">-54%</td></tr>
+<tr><td><strong>极端(AI崩盘+再融资危机)</strong></td><td><strong>10%</strong></td><td><strong>$400亿贷款触发流动性危机</strong></td><td class="negative"><strong>¥1,000</strong></td><td class="negative"><strong>-82%</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<hr/>
+
+<!-- ═══════ 七: OPENAI DEEP DIVE ═══════ -->
+<div class="module-header">
+  <span class="module-tag">七</span>
+  <span class="module-title">专项：OpenAI股权价值全维度深度拆解</span>
+  <span class="module-line"></span>
+</div>
+
+<h3>7.1 投资历程与$646亿累计敞口</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>时间</th><th>事件</th><th>金额</th><th>OpenAI估值</th></tr></thead>
+<tbody>
+<tr><td>2024.9</td><td>首次投资</td><td>未公开</td><td>—</td></tr>
+<tr><td>2024.10</td><td>VF2追加</td><td>$5亿</td><td>—</td></tr>
+<tr><td>2025全年</td><td>累计投资</td><td><strong>$34.6亿</strong></td><td>—</td></tr>
+<tr><td><strong>2026.2.27</strong></td><td><strong>最终协议签署</strong></td><td><strong>$300亿</strong></td><td><strong>Pre $7,300亿</strong></td></tr>
+<tr><td>2026.4.1</td><td>第1笔$100亿交割</td><td>$100亿</td><td>$7,300亿</td></tr>
+<tr><td>2026.7.1(计划)</td><td>第2笔$100亿</td><td>$100亿</td><td>$7,300亿</td></tr>
+<tr><td>2026.10.1(计划)</td><td>第3笔$100亿</td><td>$100亿</td><td>$7,300亿</td></tr>
+<tr style="font-weight:700;background:#fff3e0"><td><strong>累计</strong></td><td><strong>持股~13%</strong></td><td><strong>~$646亿</strong></td><td><strong>Post $8,400亿</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>7.2 OpenAI基本面</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>指标</th><th>数据</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td><strong>年化营收</strong></td><td><strong>$250亿（2026.2）</strong></td><td>14个月增长4x，史上最快</td></tr>
+<tr><td>ChatGPT周活跃用户</td><td><strong>9亿+</strong></td><td>全球级渗透率</td></tr>
+<tr><td>付费商业客户</td><td>900万+</td><td>Enterprise 100万+</td></tr>
+<tr><td>微软营收抽成</td><td><strong>20%</strong></td><td>实际留存~$200亿/年</td></tr>
+<tr><td><strong>2026E亏损</strong></td><td><strong>~$140亿</strong></td><td>⚠核心风险</td></tr>
+<tr><td>2027E现金烧钱</td><td><strong>$570亿</strong></td><td>⚠必须IPO融资</td></tr>
+<tr><td><strong>盈亏平衡时间</strong></td><td><strong>~2030年</strong></td><td>⚠漫长盈利路径</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote><strong>OpenAI的IPO不是可选项，而是财务必然性。</strong>按当前烧钱速度，2027年底前必须融资。</blockquote>
+
+<h3>7.3 软银股权多情景估值</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>情景</th><th>OpenAI估值</th><th>软银13%股权价值</th><th>浮盈</th><th>对SBG市值</th></tr></thead>
+<tbody>
+<tr><td>保守</td><td>$5,000亿</td><td>$650亿 / ¥9.4万亿</td><td>~$4亿</td><td>~30%</td></tr>
+<tr style="background:#fff3e0"><td><strong>当前</strong></td><td><strong>$8,400亿</strong></td><td><strong>$1,092亿 / ¥15.8万亿</strong></td><td><strong>+$446亿</strong></td><td><strong>~51%</strong></td></tr>
+<tr><td>乐观(IPO)</td><td>$1万亿</td><td>$1,300亿 / ¥18.9万亿</td><td>+$654亿</td><td>~61%</td></tr>
+<tr><td>极度乐观</td><td>$1.5万亿</td><td>$1,950亿 / ¥28.3万亿</td><td>+$1,304亿</td><td>~91%</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>7.4 IPO路径</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>阶段</th><th>预期时间</th><th>关键事件</th></tr></thead>
+<tbody>
+<tr><td><strong>S-1提交</strong></td><td><strong>2026 Q3</strong></td><td>首份经审计财报公开</td></tr>
+<tr><td>IPO路演</td><td>2026 Q4初</td><td>全球路演</td></tr>
+<tr><td><strong>IPO上市</strong></td><td><strong>2026 Q4~2027 Q1</strong></td><td>最可能NASDAQ</td></tr>
+<tr><td>锁定期满</td><td>IPO后90-180天</td><td>大股东解禁</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>驱动因素</strong>：2026年亏损$140亿必须IPO + $400亿过桥贷款期限倒逼 + Anthropic竞速 + 员工流动性需求</p>
+<p><strong>制约因素</strong>：2030年才盈亏平衡 + $8,400亿估值vs $140亿亏损 + 微软治理 + Anthropic冲击</p>
+
+<h3>7.5 Anthropic竞争威胁</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>对比</th><th>OpenAI</th><th>Anthropic</th></tr></thead>
+<tbody>
+<tr><td><strong>年化营收</strong></td><td>$250亿</td><td><strong>$190亿</strong>（1年前仅$19亿）</td></tr>
+<tr><td>营收增速</td><td>~3.4x/年</td><td><strong>~10x/年</strong></td></tr>
+<tr><td><strong>企业API市占率(最新)</strong></td><td><strong>~25%</strong></td><td><strong>~32% (已反超)</strong></td></tr>
+<tr><td>2023年市占率</td><td>50%</td><td>12%</td></tr>
+</tbody>
+</table>
+</div>
+<p>Altman已于2025年12月宣布全公司"code red"。Epoch AI预测Anthropic将在<strong>2026年中</strong>在年化营收上超越OpenAI。</p>
+
+<h3>7.6 $400亿过桥贷款的三条路径</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>路径</th><th>条件</th><th>对软银影响</th></tr></thead>
+<tbody>
+<tr><td class="positive">✅ 乐观</td><td>OpenAI 2027年初IPO→还款</td><td>正常还款，风险可控</td></tr>
+<tr><td class="neutral">⚠ 中性</td><td>IPO延迟→出售Arm/电信还款</td><td>"拆东补西"，弱化资产质量</td></tr>
+<tr><td class="negative">❌ 悲观</td><td>OpenAI估值缩水+IPO无望→贷款到期</td><td><strong>系统性流动性危机</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<hr/>
+
+<!-- ═══════ FINAL VERDICT ═══════ -->
+<div class="verdict-box">
+  <h2>最终投资结论</h2>
+  <h3 style="margin-top:20px">【投资评级】有条件看多 — 条件显著收紧</h3>
+  <p><strong>核心投资逻辑：</strong></p>
+  <ol>
+    <li><strong>OpenAI已是组合最大资产</strong> — $646亿持股13%，价值¥15.8万亿(&gt;51%市值)。IPO路径明确(Q3 S-1)，退出时间表前所未有地清晰</li>
+    <li><strong>Arm AI价值链重估未完</strong> — 数据中心CPU份额15%→30%+，v9版税2x，端侧AI推理爆发</li>
+    <li><strong>$400亿贷款的正向约束</strong> — 强制加速OpenAI IPO，为软银提供退出确定性</li>
+  </ol>
+
+  <h3>目标价与空间</h3>
+  <div class="verdict-table-wrap">
+  <table>
+  <thead><tr><th>时间框架</th><th>目标价</th><th>空间</th><th>前提</th></tr></thead>
+  <tbody>
+  <tr><td><strong>6个月</strong></td><td>¥7,000~8,000</td><td class="positive">+29%~+48%</td><td>OpenAI S-1提交催化</td></tr>
+  <tr><td><strong>12个月</strong></td><td><strong>¥8,000~10,000</strong></td><td class="positive"><strong>+48%~+84%</strong></td><td><strong>IPO如期推进+Arm数据</strong></td></tr>
+  <tr><td>极端上行</td><td>¥12,000+</td><td class="positive">+121%+</td><td>AI超级周期+估值重估</td></tr>
+  <tr><td>极端下行</td><td class="negative">¥1,000~2,500</td><td class="negative">-54%~-82%</td><td>AI泡沫+再融资危机</td></tr>
+  </tbody>
+  </table>
+  </div>
+
+  <h3>仓位管理</h3>
+  <div class="verdict-table-wrap">
+  <table>
+  <thead><tr><th>条件</th><th>设置</th></tr></thead>
+  <tbody>
+  <tr><td><strong>仓位上限</strong></td><td><strong>3%~5%</strong>（严格不可超过）</td></tr>
+  <tr><td><strong>止损线</strong></td><td><strong>¥3,500</strong>（-35%）</td></tr>
+  <tr><td><strong>持仓周期</strong></td><td>12~18个月</td></tr>
+  </tbody>
+  </table>
+  </div>
+
+  <h3>最终买入条件（全部满足才可建仓）</h3>
+  <ol>
+    <li>LTV比率低于25%</li>
+    <li><strong>OpenAI S-1文件已提交</strong>（IPO路径明确）</li>
+    <li><strong>$400亿过桥贷款的还款/展期安排已确认</strong></li>
+    <li>Arm最新季度营收增速≥20% YoY</li>
+    <li>日本央行无意外大幅加息（&gt;50bp单次）</li>
+    <li>股价相对于修正SOTP折价≥30%</li>
+  </ol>
+
+  <p style="margin-top:18px; font-size:12.5px; color:#e8eaf6;">
+    <strong style="color:#fff;">💡 一句话：</strong>软银当前是全球最极端的"AI集中度赌注"上市载体。看多逻辑足够强，但仓位上限就是生命线。
+  </p>
+</div>
+
+<!-- ═══════ DISCLAIMER ═══════ -->
+<div class="disclaimer">
+  <strong>免责声明：</strong>本报告由独立买方投研决策系统自动生成，所有数据来源于公开合规渠道（公司定期财报、StockAnalysis、Quartr、CNBC、Techi.com、NeoData金融数据终端、SoftBank官方公告），数据截止2026年5月2日。本报告不构成任何投资建议，投资决策需由投资者自行判断并承担风险。分析师可能持有报告中提及证券的头寸。
+</div>
+
+<div class="footer">
+  <p>SoftBank Group Corp. (9984.T) Deep Buy-Side Investment Analysis Report</p>
+  <p>Report Generated: 2026-05-03 12:24 CST | Data Cutoff: 2026-05-02</p>
+  <p style="margin-top:8px;">本报告为整合版本（含OpenAI Module 7专项拆解）</p>
+</div>
+
+</div><!-- end container -->
+
+<!-- ══════════ CHARTS ══════════ -->
+<script>
+var C = { navy:'#1a237e', blue:'#283593', accent:'#c62828', green:'#2e7d32', gold:'#ff8f00', orange:'#e65100', gray:'#757575' };
+var R = { navy10:'rgba(26,35,126,0.10)', navy08:'rgba(26,35,126,0.80)', blue065:'rgba(40,53,147,0.65)', gold085:'rgba(255,143,0,0.85)' };
+Chart.defaults.font.family='-apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif';
+Chart.defaults.color='#424242';
+
+(function(){
+  var ctx=document.getElementById('chartRevenueProfit'); if(!ctx) return;
+  new Chart(ctx,{type:'bar',data:{labels:['FY2021','FY2022','FY2023','FY2024','FY2025','TTM'],
+    datasets:[{label:'营收(¥亿)',type:'bar',data:[56282,62215,65704,67565,72438,76604],backgroundColor:R.blue065,borderColor:C.blue,borderWidth:1,yAxisID:'yRev',order:2},
+    {label:'净利润(¥亿)',type:'line',data:[49580,-17080,-10063,-2505,11345,36717],borderColor:C.accent,borderWidth:3,pointRadius:6,tension:0.25,yAxisID:'yProfit',order:1}]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    scales:{x:{grid:{display:false}},yRev:{type:'linear',position:'left',title:{display:true,text:'营收(¥亿)',color:C.blue,font:{weight:'bold'}},grid:{color:'rgba(0,0,0,0.06)'},min:0,max:90000},yProfit:{type:'linear',position:'right',title:{display:true,text:'净利润(¥亿)',color:C.accent,font:{weight:'bold'}},grid:{drawOnChartArea:false},min:-30000,max:60000}},
+    plugins:{legend:{position:'top',labels:{padding:16}}}}});
+})();
+
+(function(){
+  var ctx=document.getElementById('chartRevenueMix'); if(!ctx) return;
+  new Chart(ctx,{type:'doughnut',data:{labels:['OpenAI股权(51%)','Arm+AI计算(40%)','SoftBank Corp(20%)','VF其他(13%)','净债务(-64%)'],
+    datasets:[{data:[51,40,20,13,-64],backgroundColor:[C.gold,C.blue,C.navy,C.gray,'#e0e0e0'],borderColor:'#fff',borderWidth:2,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{padding:12,usePointStyle:true,font:{size:11}}}}}});
+})();
+
+(function(){
+  var ctx=document.getElementById('chartFinancialTrend'); if(!ctx) return;
+  new Chart(ctx,{type:'line',data:{labels:['FY2021','FY2022','FY2023','FY2024','FY2025','TTM'],
+    datasets:[{label:'营收/10(¥亿)',data:[5628,6222,6570,6756,7244,7660],borderColor:C.blue,borderWidth:2.5,pointRadius:4,tension:0.3,yAxisID:'y'},
+    {label:'营业利润率(%)',data:[10.7,11.5,9.6,8.3,10.1,7.5],borderColor:C.orange,borderWidth:2,borderDash:[6,3],pointRadius:4,tension:0.3,yAxisID:'y2'},
+    {label:'资产负债率(%)',data:[null,null,75.8,71.7,69.0,67.0],borderColor:C.accent,borderWidth:2,borderDash:[2,4],pointRadius:4,tension:0.3,yAxisID:'y2'}]},
+    options:{responsive:true,maintainAspectRatio:false,scales:{x:{grid:{display:false}},y:{title:{display:true,text:'营收/10(¥亿)'},min:0,max:10000},y2:{position:'right',title:{display:true,text:'%'},min:0,max:80,grid:{drawOnChartArea:false}}},
+    plugins:{legend:{position:'top',labels:{padding:14}}}}});
+})();
+
+(function(){
+  var ctx=document.getElementById('chartValuationRadar'); if(!ctx) return;
+  new Chart(ctx,{type:'radar',data:{labels:['P/E(TTM)优','Forward P/E优','P/B优','EV/EBITDA优','负债率优','FCF质量优'],
+    datasets:[{label:'SoftBank',data:[8.5,31.7,1.7,37.6,67,10],borderColor:C.navy,backgroundColor:R.navy10,borderWidth:2,pointRadius:4},
+    {label:'纯芯片对标',data:[35,30,5,25,20,80],borderColor:C.green,backgroundColor:'rgba(46,125,50,0.1)',borderWidth:2,pointRadius:4,borderDash:[5,3]}]},
+    options:{responsive:true,maintainAspectRatio:false,scales:{r:{beginAtZero:true,max:80,ticks:{stepSize:20,font:{size:9}},pointLabels:{font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{padding:10}}}}});
+})();
+
+(function(){
+  var ctx=document.getElementById('chartExpectedReturn'); if(!ctx) return;
+  new Chart(ctx,{type:'bar',data:{labels:['OpenAI IPO','Arm数据中心','Anthropic威胁','过桥贷款危机'],
+    datasets:[{label:'股价弹性(%)',data:[22,22,-18,-32],backgroundColor:[R.gold085,C.blue,'rgba(198,40,40,0.15)','rgba(198,40,40,0.7)'],borderWidth:1}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{title:{display:true,text:'预期股价弹性(%)'},min:-40,max:30}},plugins:{legend:{display:false}}}});
+})();
+</script>
+
+</body>
+</html>
