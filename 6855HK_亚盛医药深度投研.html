@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>亚盛医药（6855.HK）买方深度投资分析报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root {
+  --navy: #1a237e; --blue: #283593; --light-blue: #e8eaf6;
+  --accent: #c62828; --green: #2e7d32; --orange: #e65100;
+  --gold: #ff8f00; --text: #212121; --text2: #424242;
+  --gray: #757575; --bg: #fafafa; --white: #fff;
+  --border: #e0e0e0; --table-hdr: #1565c0;
+  --table-alt1: #e3f2fd; --table-alt2: #f8f9fa;
+  --radius: 6px; --shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.7;
+  font-size: 14px; -webkit-font-smoothing: antialiased;
+}
+
+/* 封面 */
+.cover {
+  background: linear-gradient(135deg, var(--navy) 0%, #283593 50%, #3949ab 100%);
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  text-align: center; color: white; padding: 40px 20px;
+  position:relative; overflow:hidden; padding-bottom:80px;
+}
+.cover::before {
+  content:''; position:absolute; top:-50%; right:-30%; width:600px; height:600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+  border-radius:50%;
+}
+.cover::after {
+  content:''; position:absolute; bottom:-40%; left:-20%; width:500px; height:500px;
+  background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+  border-radius:50%;
+}
+.cover-inner { position:relative; z-index:1; max-width:720px; padding-bottom:20px; }
+.cover-badge {
+  display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25);
+  padding:4px 16px; border-radius:20px; font-size:12px; letter-spacing:2px; margin-bottom:20px;
+  backdrop-filter: blur(4px);
+}
+.cover h1 { font-size:36px; font-weight:800; letter-spacing:1px; margin-bottom:12px; }
+.cover h1 span { font-weight:300; font-size:26px; opacity:0.85; }
+.cover-sub { font-size:15px; opacity:0.8; margin-bottom:35px; }
+.cover-grid {
+  display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; max-width:560px; margin:0 auto 35px;
+}
+.cover-card {
+  background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.15);
+  border-radius:10px; padding:16px 12px; backdrop-filter: blur(4px);
+}
+.cover-card .label { font-size:11px; opacity:0.65; margin-bottom:4px; }
+.cover-card .value { font-size:18px; font-weight:700; }
+.cover-rating {
+  background: linear-gradient(135deg, var(--gold) 0%, #ffa000 100%);
+  color:#fff; display:inline-block; padding:14px 40px; border-radius:12px;
+  font-size:22px; font-weight:800; box-shadow:0 4px 20px rgba(255,143,0,0.4);
+}
+.cover-rating small { display:block; font-size:11px; font-weight:400; opacity:0.85; margin-top:4px; }
+.cover-footer {
+  position:absolute; bottom:20px; left:0; right:0; text-align:center;
+  font-size:11px; opacity:0.45; letter-spacing:1px;
+  z-index:2; pointer-events:none;
+}
+
+/* 主容器 */
+.container { max-width:960px; margin:0 auto; padding:50px 30px 80px; }
+
+/* 摘要卡片 */
+.summary-box {
+  background:var(--white); border-radius:12px; box-shadow:var(--shadow);
+  padding:32px; margin-bottom:40px; border-left:4px solid var(--navy);
+}
+.summary-title { font-size:18px; font-weight:700; color:var(--navy); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+.summary-title::before {
+  content:''; width:4px; height:20px; background:var(--navy); border-radius:2px;
+}
+.summary-content { font-size:14px; line-height:1.85; color:var(--text2); }
+.summary-highlight {
+  background:linear-gradient(to right, #e8eaf6, transparent);
+  padding:16px 20px; border-radius:8px; margin-top:16px;
+  border-left:3px solid var(--blue);
+}
+
+/* KPI 卡片行 */
+.kpi-row { display:flex; gap:14px; margin:20px 0; flex-wrap:wrap; }
+.kpi-card {
+  flex:1; min-width:140px; background:var(--white); border-radius:10px;
+  padding:18px 16px; box-shadow:var(--shadow); text-align:center;
+  border-bottom:3px solid var(--table-hdr);
+}
+.kpi-card .kpi-label { font-size:11px; color:var(--gray); margin-bottom:6px; }
+.kpi-card .kpi-value { font-size:20px; font-weight:700; color:var(--navy); }
+.kpi-card .kpi-sub { font-size:11px; color:var(--gray); margin-top:2px; }
+.kpi-card.red { border-bottom-color:var(--accent); }
+.kpi-card.red .kpi-value { color:var(--accent); }
+.kpi-card.green { border-bottom-color:var(--green); }
+.kpi-card.green .kpi-value { color:var(--green); }
+
+/* 模块标题 */
+.module-title {
+  font-size:20px; font-weight:700; color:var(--navy); margin:50px 0 20px;
+  display:flex; align-items:center; gap:10px;
+}
+.module-title .tag {
+  background:var(--navy); color:white; padding:3px 12px; border-radius:4px;
+  font-size:12px; font-weight:400; letter-spacing:1px;
+}
+.module-title::after {
+  content:''; flex:1; height:1px; background:linear-gradient(to right, var(--border), transparent);
+}
+
+/* 章节标题 */
+.section-title {
+  font-size:16px; font-weight:700; color:var(--navy); margin:30px 0 14px;
+  padding-left:12px; border-left:4px solid var(--blue);
+}
+
+/* 表格 */
+table {
+  width:100%; border-collapse:collapse; margin:14px 0;
+  font-size:13px; border-radius:8px; overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+}
+thead th {
+  background:var(--table-hdr); color:white; padding:10px 12px;
+  font-weight:600; text-align:left; letter-spacing:0.5px;
+}
+tbody td { padding:9px 12px; border-bottom:1px solid var(--border); }
+tbody tr:nth-child(even) { background:var(--table-alt2); }
+tbody tr:nth-child(odd) { background:var(--table-alt1); }
+tbody tr:hover { background:#c5cae9; }
+.val-positive { color:var(--green); font-weight:600; }
+.val-negative { color:var(--accent); font-weight:600; }
+.val-neutral { color:var(--gold); font-weight:600; }
+tfoot td { padding:8px 12px; font-weight:600; background:#e8eaf6; }
+
+/* 投资结论框 */
+.conclusion-box {
+  background:linear-gradient(135deg, var(--navy), #283593);
+  color:white; border-radius:14px; padding:36px 40px; margin:50px 0;
+  box-shadow:0 8px 32px rgba(26,35,126,0.3);
+}
+.conclusion-box h2 { font-size:22px; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:14px; }
+.conclusion-box .rating-row {
+  display:flex; gap:20px; align-items:center; margin-bottom:20px; flex-wrap:wrap;
+}
+.conclusion-box .rating-badge {
+  background:var(--gold); color:white; padding:10px 28px; border-radius:8px;
+  font-size:20px; font-weight:800;
+}
+.conclusion-box .rating-detail { font-size:14px; opacity:0.85; line-height:1.7; }
+.conclusion-box h3 { font-size:15px; margin:18px 0 10px; opacity:0.9; }
+.conclusion-box ul { padding-left:20px; }
+.conclusion-box li { margin-bottom:6px; font-size:14px; line-height:1.6; }
+.conclusion-box .warning {
+  background:rgba(255,255,255,0.1); border-radius:8px; padding:14px 16px;
+  font-size:13px; margin-top:20px; border-left:3px solid var(--gold);
+}
+.conclusion-box .upside { color:#4caf50; font-weight:700; font-size:16px; }
+.conclusion-box .downside { color:#ef5350; font-weight:600; }
+
+/* 图表容器 */
+.chart-wrap {
+  background:white; border-radius:10px; padding:24px; margin:20px 0;
+  box-shadow:0 2px 8px rgba(0,0,0,0.06); page-break-inside:avoid;
+}
+.chart-title { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:14px; }
+.chart-note { font-size:11px; color:var(--gray); margin-top:10px; text-align:right; }
+.chart-row { display:flex; gap:20px; flex-wrap:wrap; }
+.chart-row .chart-wrap { flex:1; min-width:300px; }
+
+/* 风险卡片 */
+.risk-card {
+  background:white; border-radius:10px; padding:20px; margin:10px 0;
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  border-left:4px solid var(--accent);
+}
+.risk-card.high { border-left-color:var(--accent); }
+.risk-card.medium { border-left-color:var(--gold); }
+.risk-card.low { border-left-color:var(--green); }
+.risk-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:8px; display:flex; justify-content:space-between; }
+.risk-badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; }
+.risk-badge.high { background:#ffebee; color:var(--accent); }
+.risk-badge.medium { background:#fff8e1; color:var(--gold); }
+.risk-badge.low { background:#e8f5e9; color:var(--green); }
+.risk-desc { font-size:13px; color:var(--text2); margin-bottom:8px; }
+.risk-impact { font-size:12px; color:var(--gray); }
+
+/* 分割线 */
+.divider { height:1px; background:linear-gradient(to right, transparent, var(--border), transparent); margin:40px 0; }
+
+/* 文本格式 */
+.text-b { font-weight:700; }
+.text-r { color:var(--accent); }
+.text-g { color:var(--green); }
+.text-gray { color:var(--gray); }
+.text-xl { font-size:18px; }
+.text-lg { font-size:16px; }
+.mt-10 { margin-top:10px; }
+.mt-20 { margin-top:20px; }
+.mb-10 { margin-bottom:10px; }
+.mb-20 { margin-bottom:20px; }
+
+/* 核心矛盾 */
+.contradiction-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0;
+}
+.contradiction-card {
+  background:white; border-radius:10px; padding:20px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.06);
+}
+.contradiction-card.bear { border-top:3px solid var(--accent); }
+.contradiction-card.bull { border-top:3px solid var(--green); }
+.contradiction-card h4 { font-size:13px; font-weight:700; margin-bottom:10px; }
+.contradiction-card.bear h4 { color:var(--accent); }
+.contradiction-card.bull h4 { color:var(--green); }
+.contradiction-card ul { padding-left:16px; }
+.contradiction-card li { font-size:13px; color:var(--text2); margin-bottom:6px; line-height:1.6; }
+
+/* 底部 */
+.footer {
+  text-align:center; padding:30px; font-size:11px; color:var(--gray);
+  border-top:1px solid var(--border); margin-top:60px;
+}
+.footer-disclaimer {
+  background:#fff8e1; border-radius:8px; padding:14px 16px;
+  font-size:12px; color:var(--orange); margin-bottom:20px; line-height:1.7;
+}
+
+/* 响应式 */
+@media (max-width:768px) {
+  .cover-grid, .kpi-row, .contradiction-grid, .chart-row { flex-direction:column; }
+  .container { padding:30px 16px; }
+}
+@media print {
+  body { background:white; }
+  .cover { min-height:auto; padding:40px 20px; page-break-after:always; }
+  .chart-wrap { page-break-inside:avoid; }
+  .container { max-width:100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- 封面 -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-badge">港股 · 生物医药 · 买方深度投研</div>
+    <h1>亚盛医药<span>（6855.HK）</span></h1>
+    <p class="cover-sub">Ascentage Pharma Group — 全球临床阶段创新药企 | 核心产品耐立克（奥雷巴替尼）</p>
+    <div class="cover-grid">
+      <div class="cover-card">
+        <div class="label">最新收盘价（港币）</div>
+        <div class="value">HK$46.12</div>
+      </div>
+      <div class="cover-card">
+        <div class="label">总市值（亿港元）</div>
+        <div class="value">172.18</div>
+      </div>
+      <div class="cover-card">
+        <div class="label">报告日期</div>
+        <div class="value">2026-04-27</div>
+      </div>
+    </div>
+    <div class="cover-rating">
+      中性（Hold）
+      <small>目标价：HK$42-58 | 上涨空间：+25% / 下跌空间：-20%</small>
+    </div>
+  </div>
+  <div class="cover-footer">CONFIDENTIAL — FOR INTERNAL USE ONLY — 不含任何AI/工具标识</div>
+</div>
+
+<!-- KPI行 -->
+<div class="container">
+  <div class="kpi-row">
+    <div class="kpi-card red">
+      <div class="kpi-label">P/E (TTM)</div>
+      <div class="kpi-value">-12.51x</div>
+      <div class="kpi-sub">亏损公司，PE参考价值有限</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">P/B (LF)</div>
+      <div class="kpi-value">11.74x</div>
+      <div class="kpi-sub">基于每股净资产¥3.55</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2025A营收（亿元）</div>
+      <div class="kpi-value">5.74</div>
+      <div class="kpi-sub">同比-41.5%（含技术授权终止）</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">2025A归母净利（亿元）</div>
+      <div class="kpi-value">-12.43</div>
+      <div class="kpi-sub">亏损同比扩大至-206%</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">现金储备（亿元）</div>
+      <div class="kpi-value">24.70</div>
+      <div class="kpi-sub">足够支撑约2年运营</div>
+    </div>
+  </div>
+
+  <!-- 核心结论摘要 -->
+  <div class="summary-box">
+    <div class="summary-title">核心投资结论</div>
+    <div class="summary-highlight">
+      <b>投资评级：中性（Hold）</b> — 亚盛医药是一家临床阶段创新药企，核心产品耐立克（奥雷巴替尼）是全球第二款获批的第三代BCR-ABL抑制剂，具有明确的临床价值和海外授权潜力。但2025年营收大幅下滑（同比-41.5%），主要受武田制药授权终止的负面影响，叠加持续高强度研发投入（研发费用¥11.37亿，占营收198%），公司仍处于战略性亏损期。当前股价对应P/B 11.74x，估值偏高，但考虑到现金储备尚可（¥24.7亿）与核心管线的进展空间，中性评级，目标价HK$42-58（较现价HK$46.12约有-9%至+26%空间）。<br><br>
+      <b>核心逻辑：</b>①耐立克是同类最优的第三代BCR-ABL抑制剂，国内CML市场渗透率仍有提升空间；②全球多中心临床数据积极，海外授权是重要期权；③武田授权终止后，自主商业化团队建设成效待验证；④账面现金约能支撑2年，后续融资压力与稀释风险不可忽视。
+    </div>
+  </div>
+
+  <!-- ════════════════════ M1 ════════════════════ -->
+  <div class="module-title">
+    <span class="tag">M1</span>
+    公司生态位与商业模式
+  </div>
+
+  <div class="section-title">1.1 公司画像速览</div>
+  <table>
+    <thead><tr><th>维度</th><th>关键数据</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>成立 / 上市时间</td><td>2005年 / 2019年10月</td><td>港交所18A章未盈利生物科技公司</td></tr>
+      <tr><td>创始人 / 实控人</td><td>杨大俊（共同创始人兼CEO）</td><td>美国NIH背景，专注肿瘤创新药研发</td></tr>
+      <tr><td>总部</td><td>中国苏州 / 美国费城（临床运营中心）</td><td>全球化研发布局</td></tr>
+      <tr><td>员工规模</td><td>约800-1000人（2025年报）</td><td>商业化团队持续扩充</td></tr>
+      <tr><td>细分赛道</td><td>CML（慢性髓系白血病）/ BCR-ABL抑制剂</td><td>奥雷巴替尼为国内唯一自研第三代TKI</td></tr>
+      <tr><td>核心产品</td><td>耐立克（奥雷巴替尼，olverembatinib）</td><td>2021年11月附条件获批，2024年正式纳入医保</td></tr>
+      <tr><td>商业模式</td><td>创新药研发 + 国内商业化 + 海外权益授权</td><td>"自研+对外授权"双轮驱动</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">1.2 核心业务构成（近三年营收拆解）</div>
+  <table>
+    <thead><tr><th>收入来源</th><th>2023A</th><th>占比</th><th>2024A</th><th>占比</th><th>2025A</th><th>占比</th><th>YoY</th></tr></thead>
+    <tbody>
+      <tr><td>耐立克（国内商业化）</td><td>约2.0亿</td><td>~90%</td><td>约8.5亿</td><td>~87%</td><td>约5.5亿</td><td>~96%</td><td class="val-negative">-35%</td></tr>
+      <tr><td>武田授权终止一次性款项</td><td>—</td><td>—</td><td>约1.0亿</td><td>~10%</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>其他（合作收入等）</td><td>约0.2亿</td><td>~10%</td><td>约0.3亿</td><td>~3%</td><td>约0.2亿</td><td>~4%</td><td class="val-negative">-30%</td></tr>
+      <tr><td><b>营业总收入</b></td><td><b>2.22亿</b></td><td>100%</td><td><b>9.81亿</b></td><td>100%</td><td><b>5.74亿</b></td><td>100%</td><td class="val-negative">-41.5%</td></tr>
+    </tbody>
+  </table>
+  <p class="text-gray" style="font-size:12px;margin-top:6px;">数据来源：公司2023-2025年年报；武田授权终止影响2025年营收确认；2024年含武田授权终止一次性款项约1亿元</p>
+
+  <div class="chart-wrap">
+    <div class="chart-title">C1：亚盛医药营收结构变化（2023-2025）</div>
+    <div class="chart-canvas-wrap" style="min-height:280px;">
+      <canvas id="chartRevenueMix"></canvas>
+    </div>
+    <div class="chart-note">数据来源：公司年报；单位：亿元人民币；2025年武田授权终止无一次性款项</div>
+  </div>
+
+  <div class="section-title">1.3 护城河深度剖析</div>
+  <table>
+    <thead><tr><th>护城河类型</th><th>具体表现</th><th>量化证据</th><th>可持续性</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>技术/专利壁垒</b></td>
+        <td>自主研发的BCR-ABL抑制剂平台；第三代TKI专利布局</td>
+        <td>奥雷巴替尼是全球第二款、中国首款自研第三代BCR-ABL；中美欧日全球专利保护</td>
+        <td>★★★★☆（专利2032-2034年到期前具独占性）</td>
+      </tr>
+      <tr>
+        <td><b>先发优势</b></td>
+        <td>2021年附条件获批，进入CML-T315I突变耐药市场</td>
+        <td>同类竞争产品亚盛耐立克 vs 普纳替尼（国内未上市）</td>
+        <td>★★★★☆（仿制药进入尚需5-8年）</td>
+      </tr>
+      <tr>
+        <td><b>监管壁垒</b></td>
+        <td>附条件批准路径；罕见病/耐药适应症绿色通道</td>
+        <td>耐立克获CDE优先审评，附条件批准节省约2-3年时间</td>
+        <td>★★★★★</td>
+      </tr>
+      <tr>
+        <td><b>规模效应/成本优势</b></td>
+        <td>中小型 biotech，规模效应有限</td>
+        <td>当前营收规模5.74亿，尚不足以形成显著成本优势</td>
+        <td>★★☆☆☆</td>
+      </tr>
+      <tr>
+        <td><b>网络效应/Switching Cost</b></td>
+        <td>医生处方习惯锁定，患者用药粘性</td>
+        <td>CML患者换药成本高，医生处方一旦建立更替缓慢</td>
+        <td>★★★☆☆</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">1.4 上下游议价权</div>
+  <table>
+    <thead><tr><th>方向</th><th>指标</th><th>2023A</th><th>2024A</th><th>2025A</th><th>趋势</th><th>同业参考</th></tr></thead>
+    <tbody>
+      <tr><td>对下游（医院/患者）</td><td>应收账款周转天数</td><td>162天</td><td>42天</td><td>105天</td><td>↑显著恶化</td><td>康方~30天，信达~60天</td></tr>
+      <tr><td>对上游（供应商）</td><td>应付账款周转天数</td><td>990天</td><td>1018天</td><td>731天</td><td>↓改善中</td><td>行业平均~120-200天</td></tr>
+      <tr><td>对下游</td><td>前五大客户集中度</td><td>未披露</td><td>未披露</td><td>未披露</td><td>—</td><td>—</td></tr>
+      <tr><td>对上游</td><td>前五大供应商集中度</td><td>未披露</td><td>未披露</td><td>未披露</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p class="text-gray" style="font-size:12px;">注：应付账款周转天数极高（731-1018天）反映公司对CRO/CMO供应商的强势账期管理，但也隐含对供应商的资金挤压风险；应收账款周转天数2025年大幅回升至105天，需关注医院回款周期拉长。</p>
+
+  <!-- ════════════════════ M2 ════════════════════ -->
+  <div class="module-title">
+    <span class="tag">M2</span>
+    行业格局与竞争态势
+  </div>
+
+  <div class="section-title">2.1 行业空间与生命周期</div>
+  <table>
+    <thead><tr><th>维度</th><th>分析</th></tr></thead>
+    <tbody>
+      <tr><td><b>所处阶段</b></td><td>成长期（中后期）— 国内CML市场仍在渗透率提升阶段，耐立克进入医保后放量空间存在</td></tr>
+      <tr><td><b>TAM（总潜在市场）</b></td><td>全球CML市场约$60亿；中国CML市场约¥50-60亿（2025年估算）</td></tr>
+      <tr><td><b>SAM（可服务市场）</td><td>中国TKI耐药CML市场约¥15-20亿（耐立克目标市场）</td></tr>
+      <tr><td><b>SOM（当前份额）</b></td><td>2025年耐立克销售约¥5.5亿，对SAM渗透率约28-37%</td></tr>
+      <tr><td><b>渗透率</b></td><td>CML-T315I突变耐药患者约占CML整体约15-20%，耐药后对三代TKI需求刚性强</td></tr>
+      <tr><td><b>未来3-5年行业CAGR</b></td><td>中国CML市场CAGR约12-15%（IQVIA数据）；耐立克峰值销售预估¥15-20亿（中性假设）</td></tr>
+      <tr><td><b>关键驱动力</b></td><td>① 医保目录持续覆盖与放量；② 新适应症拓展（Ph+ALL等）；③ 海外授权落地</td></tr>
+      <tr><td><b>关键压制因素</b></td><td>① 竞争加剧（其他三代TKI在研）；② 医保谈判降价压力；③ 集采对TKI整体价格体系的影响</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">2.2 竞争格局图谱</div>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">
+    <span style="background:#e8eaf6;padding:2px 8px;border-radius:4px;font-weight:700;">🏆 一超多强</span> — 国内CML市场由伊马替尼（格列卫）等一代TKI主导，普纳替尼未在国内上市，耐立克在三代TKI细分市场占据先发优势。
+  </p>
+  <table>
+    <thead><tr><th>对标维度</th><th>亚盛医药(6855)</th><th>百济神州(6160)</th><th>康方生物(9926)</th><th>信达生物(1801)</th><th>君实生物(1877)</th></tr></thead>
+    <tbody>
+      <tr><td>总市值（亿港元）</td><td class="val-neutral">172.2</td><td>约2,800</td><td>约550</td><td>约1,000</td><td>约300</td></tr>
+      <tr><td>2025A营收（亿元）</td><td class="val-negative">5.74</td><td>约900+（含美股）</td><td>30.6</td><td>约80</td><td>约20</td></tr>
+      <tr><td>P/E(TTM)</td><td class="val-neutral">-12.5x（亏损）</td><td>约80x（亏损）</td><td class="val-negative">-8.2x（亏损）</td><td class="val-negative">-15x（亏损）</td><td class="val-negative">-10x（亏损）</td></tr>
+      <tr><td>P/B(LF)</td><td class="val-neutral">11.74x</td><td>约8x</td><td>约6x</td><td>约7x</td><td>约4x</td></tr>
+      <tr><td>毛利率</td><td class="val-neutral">91.5%</td><td>约82%</td><td>约88%</td><td>约80%</td><td>约78%</td></tr>
+      <tr><td>ROE（LTM）</td><td class="val-negative">-156%</td><td class="val-negative">-40%</td><td class="val-negative">-40%</td><td class="val-negative">-35%</td><td class="val-negative">-60%</td></tr>
+      <tr><td>3Y营收CAGR</td><td class="val-neutral">227%（高基数效应）</td><td>约50%</td><td>约60%</td><td>约40%</td><td>约20%</td></tr>
+      <tr><td>核心差距/优势</td><td>CML-TKI唯一性；三代TKI先发</td><td>全球化商业化；收入规模最大</td><td>双抗平台；医保放量快</td><td>PD-1市场领先；收入规模大</td><td>特瑞普利单抗；收入恢复</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart-row">
+    <div class="chart-wrap" style="flex:1;min-width:300px;">
+      <div class="chart-title">C3A：同业盈利能力对比</div>
+      <div class="chart-canvas-wrap" style="min-height:310px;">
+        <canvas id="chartCompareProfit"></canvas>
+      </div>
+      <div class="chart-note">数据来源：各公司2025A年报；毛利率/净利率对比</div>
+    </div>
+    <div class="chart-wrap" style="flex:1;min-width:300px;">
+      <div class="chart-title">C3B：同业估值对比（P/B）</div>
+      <div class="chart-canvas-wrap" style="min-height:310px;">
+        <canvas id="chartComparePB"></canvas>
+      </div>
+      <div class="chart-note">数据来源：NeoData实时行情；市值截至2026-04-27</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ M3 ════════════════════ -->
+  <div class="module-title">
+    <span class="tag">M3</span>
+    财务质量深度透视
+  </div>
+
+  <div class="section-title">3.1 核心盈利指标趋势（2021-2025）</div>
+  <table>
+    <thead><tr><th>指标</th><th>2021A</th><th>2022A</th><th>2023A</th><th>2024A</th><th>2025A</th><th>趋势</th></tr></thead>
+    <tbody>
+      <tr><td>营收（亿元）</td><td>0.28</td><td>1.25</td><td>2.22</td><td>9.81</td><td>5.74</td><td class="val-neutral">↑↓波动大</td></tr>
+      <tr><td>营收YoY</td><td>+124%</td><td>+346%</td><td>+78%</td><td>+342%</td><td class="val-negative">-41.5%</td><td>高波动</td></tr>
+      <tr><td>毛利润（亿元）</td><td>0.25</td><td>1.05</td><td>1.91</td><td>9.52</td><td>5.25</td><td>—</td></tr>
+      <tr><td>毛利率</td><td>88.1%</td><td>84.2%</td><td>86.2%</td><td>97.0%</td><td class="val-positive">91.5%</td><td>高位稳定</td></tr>
+      <tr><td>研发费用（亿元）</td><td>4.10</td><td>5.22</td><td>7.07</td><td>9.47</td><td class="val-negative">11.37</td><td>持续攀升</td></tr>
+      <tr><td>归母净利润（亿元）</td><td class="val-negative">-7.82</td><td class="val-negative">-6.78</td><td class="val-negative">-9.26</td><td class="val-negative">-4.05</td><td class="val-negative">-12.43</td><td>亏损扩大</td></tr>
+      <tr><td>扣非净利润（亿元）</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="val-negative">-12.43</td><td>同口径</td></tr>
+      <tr><td>ROE</td><td class="val-negative">-75%</td><td class="val-negative">-78%</td><td class="val-negative">-395%</td><td class="val-negative">-250%</td><td class="val-negative">-156%</td><td>高度负值</td></tr>
+      <tr><td>资产负债率</td><td>58.0%</td><td>51.1%</td><td>97.2%</td><td class="val-neutral">89.5%</td><td class="val-positive">66.3%</td><td>改善</td></tr>
+      <tr><td>现金储备（亿元）</td><td>—</td><td>—</td><td>10.94</td><td>12.61</td><td class="val-positive">24.70</td><td>显著改善（融资）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart-wrap">
+    <div class="chart-title">C2：亚盛医药营收与净利润趋势（2021-2025A）</div>
+    <div class="chart-canvas-wrap" style="min-height:300px;">
+      <canvas id="chartRevenueProfit"></canvas>
+    </div>
+    <div class="chart-note">数据来源：公司年报；单位：亿元人民币；2025年净利润含武田授权终止影响的一次性拨备</div>
+  </div>
+
+  <div class="section-title">3.2 杜邦拆解：ROE变化驱动因子</div>
+  <table>
+    <thead><tr><th>因子</th><th>2023A</th><th>2024A</th><th>2025A</th><th>变动方向</th><th>对ROE影响</th></tr></thead>
+    <tbody>
+      <tr><td>净利率</td><td>-417%</td><td>-41.4%</td><td>-216.5%</td><td class="val-negative">↓恶化</td><td>主拖累因子</td></tr>
+      <tr><td>资产周转率</td><td>0.08x</td><td>0.38x</td><td>0.17x</td><td>↓下降</td><td>拖累（营收下滑）</td></tr>
+      <tr><td>权益乘数（杠杆）</td><td>35.4x</td><td>9.55x</td><td>2.97x</td><td class="val-positive">↓显著下降</td><td>改善（融资后去杠杆）</td></tr>
+      <tr><td><b>→ ROE</b></td><td class="val-negative">-395%</td><td class="val-negative">-250%</td><td class="val-negative">-156%</td><td>↑略有改善</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p class="text-gray" style="font-size:12px;">注：2024年通过融资（股权融资约10亿港元）大幅去杠杆，权益乘数从35.4x降至9.55x；2025年进一步融资，权益乘数降至2.97x，资产负债表显著修复，但净利率仍是核心问题。</p>
+
+  <div class="section-title">3.3 盈利质量：现金含量检验</div>
+  <table>
+    <thead><tr><th>检验项目</th><th>公式</th><th>2023A</th><th>2024A</th><th>2025A</th><th>判断标准</th><th>结论</th></tr></thead>
+    <tbody>
+      <tr><td>OCF/净利润</td><td>经营现金流÷净利润</td><td>0.78x</td><td>0.27x</td><td>—（负净利润）</td><td>>0.8健康</td><td class="val-negative">⚠️ 警示（持续<0.8）</td></tr>
+      <tr><td>经营现金流（亿元）</td><td>OCF</td><td class="val-negative">-7.26</td><td class="val-negative">-1.11</td><td>—</td><td>负值</td><td class="val-negative">亏损经营消耗现金</td></tr>
+      <tr><td>自由现金流（亿元）</td><td>FCF</td><td class="val-negative">-7.72</td><td class="val-negative">-1.36</td><td>—</td><td>>0.5为健康</td><td class="val-negative">内生造血能力极弱</td></tr>
+      <tr><td>CapEx/营收</td><td>资本支出÷营收</td><td>~2%</td><td>~0.2%</td><td>—</td><td>重资产行业更高</td><td>轻资产模式（研发型）</td></tr>
+      <tr><td>期末现金储备（亿元）</td><td>现金+短期投资</td><td>10.94</td><td>12.61</td><td>24.70</td><td>安全垫</td><td class="val-neutral">尚可（2年运营）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">3.4 资产负债表健康度体检</div>
+  <table>
+    <thead><tr><th>科目</th><th>2023A</th><th>2024A</th><th>2025A</th><th>预警阈值</th><th>风险等级</th></tr></thead>
+    <tbody>
+      <tr><td>资产负债率</td><td class="val-negative">97.2%</td><td class="val-neutral">89.5%</td><td class="val-neutral">66.3%</td><td>>60%关注</td><td>🟡 黄（2025A改善）</td></tr>
+      <tr><td>有息负债/净资产</td><td>极高</td><td>极高</td><td>约0.4x</td><td>>50%高危</td><td>🟢 绿（已偿还）</td></tr>
+      <tr><td>商誉/净资产</td><td>约40.8%</td><td>约9.3%</td><td>约1.9%</td><td>>30%高危</td><td>🟢 绿（2025年已减值）</td></tr>
+      <tr><td>存货周转天数</td><td>151天</td><td>141天</td><td>130天</td><td>同业+20%预警</td><td>🟡 黄（偏高）</td></tr>
+      <tr><td>应收周转天数</td><td>162天</td><td>42天</td><td>105天</td><td>同业+20%预警</td><td>🟡 黄（2025年反弹）</td></tr>
+      <tr><td>流动比率</td><td>1.44x</td><td>1.26x</td><td class="val-positive">1.79x</td><td><1.0危险</td><td>🟢 绿</td></tr>
+      <tr><td>利息保障倍数</td><td>N/A（亏损）</td><td>N/A</td><td>N/A</td><td><3.0关注</td><td>⚠️ 亏损无意义</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">3.5 财务预警信号汇总</div>
+  <div class="risk-card high">
+    <div class="risk-title">
+      🔴 红灯信号（需立即关注）
+      <span class="risk-badge high">2个</span>
+    </div>
+    <div class="risk-desc">
+      <b>①经营现金流持续为负：</b>2023年OCF -7.26亿、2024年OCF -1.11亿，绝对值持续为负，表明公司核心业务无法自我造血，完全依赖融资维持。<br>
+      <b>②营收高度不稳定：</b>2025年营收同比-41.5%（从9.81亿骤降至5.74亿），武田授权终止导致收入断层，商业模式抗风险能力弱。
+    </div>
+  </div>
+  <div class="risk-card medium">
+    <div class="risk-title">
+      🟡 黄灯信号（持续跟踪）
+      <span class="risk-badge medium">3个</span>
+    </div>
+    <div class="risk-desc">
+      <b>①应收账款周转天数大幅反弹：</b>从2024年42天跳升至105天，医院回款周期显著拉长，可能存在渠道压货或终端动销问题。<br>
+      <b>②研发费用高企（¥11.37亿，占营收198%）：</b>研发强度极高，在无新融资情况下现金消耗速度较快。<br>
+      <b>③后续融资压力：</b>按当前现金消耗速度（约¥12-15亿/年），账面¥24.7亿仅能支撑约1.5-2年，届时或面临股权融资摊薄。
+    </div>
+  </div>
+
+  <!-- ════════════════════ M4 ════════════════════ -->
+  <div class="module-title">
+    <span class="tag">M4</span>
+    增长驱动力与可持续性
+  </div>
+
+  <div class="section-title">4.1 历史增长归因分解</div>
+  <table>
+    <thead><tr><th>增长来源</th><th>贡献度估算</th><th>可持续性</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>耐立克国内商业化放量</td><td>~60%</td><td>★★★☆☆</td><td>2024年进入医保后快速放量，2025年受武田授权终止拖累</td></tr>
+      <tr><td>武田授权终止一次性款项</td><td>~30%（2024年）</td><td>☆ 不可持续</td><td>一次性收入，不具可重复性</td></tr>
+      <tr><td>新适应症申报</td><td>~10%</td><td>★★★★☆</td><td>Ph+ ALL等新适应症持续申报中</td></tr>
+      <tr><td>汇率/非经常性</td><td>~0%</td><td>☆</td><td>无重大影响</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">4.2 未来增长引擎识别（按重要性排序）</div>
+  <table>
+    <thead><tr><th>排序</th><th>增长引擎</th><th>驱动逻辑</th><th>量化跟踪指标</th><th>确定性</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>1️⃣</b></td>
+        <td><b>耐立克医保放量</b></td>
+        <td>2024年正式纳入国家医保目录，2025年为首个完整医保年度；CML耐药患者渗透率仍有提升空间</td>
+        <td>耐立克季度销售额（目标峰值¥15-20亿）；医院覆盖数量；患者援助项目执行情况</td>
+        <td class="val-neutral">中等（竞争+降价双重压力）</td>
+      </tr>
+      <tr>
+        <td><b>2️⃣</b></td>
+        <td><b>新适应症拓展</b></td>
+        <td>奥雷巴替尼正在推进Ph+ ALL（费城染色体阳性急性淋巴细胞白血病）等新适应症；儿童适应症</td>
+        <td>NMPA新适应症审批进度；CDE特殊审批通道使用情况</td>
+        <td class="val-positive">较高</td>
+      </tr>
+      <tr>
+        <td><b>3️⃣</b></td>
+        <td><b>海外授权权益</b></td>
+        <td>武田授权终止后，公司寻求重新授权；全球多中心临床数据是核心筹码；参考亚盛与全球药企的授权先例</td>
+        <td>海外授权公告；海外临床试验入组进度（美国/欧洲）</td>
+        <td class="val-neutral">中低（武田终止影响声誉，重新授权时间不确定）</td>
+      </tr>
+      <tr>
+        <td><b>4️⃣</b></td>
+        <td><b>其他管线推进</b></td>
+        <td>APG-2575（BCL-2抑制剂）、APG-1252（Bcl-2/xL抑制剂）等肿瘤管线进入关键临床</td>
+        <td>关键临床数据读出（预计2026-2027年）；注册临床入组速度</td>
+        <td>低（早期管线不确定性高）</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">4.3 管理层执行力评估</div>
+  <table>
+    <thead><tr><th>维度</th><th>过去3年表现</th><th>评分</th><th>证据</th></tr></thead>
+    <tbody>
+      <tr><td>武田授权终止处理</td><td>武田于2024年Q4终止olverembatinib除中国外全球权益授权，公司接回全球权益</td><td>3/5</td><td>短期利空（授权金终止），但保留了全球权益的长期价值</td></tr>
+      <tr><td>商业化团队建设</td><td>2024年耐立克进入医保后快速覆盖约800家医院，但2025年销售额下滑暴露商业化效率问题</td><td>3/5</td><td>销售费用¥3.54亿（同比+81%），但收入反而下降；人效存疑</td></tr>
+      <tr><td>融资能力</td><td>2024年成功融资约10亿港元，2025年融资约10亿港元；融资能力尚可</td><td>4/5</td><td>现金从¥12.6亿增至¥24.7亿，显示市场融资渠道畅通</td></tr>
+      <tr><td>管线推进效率</td><td>耐立克附条件批准到完全批准推进中；其他管线进入关键临床</td><td>3.5/5</td><td>研发管线推进有序，但核心产品收入下滑压力较大</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ════════════════════ M5 ════════════════════ -->
+  <div class="module-title">
+    <span class="tag">M5</span>
+    估值与安全边际
+  </div>
+
+  <div class="section-title">5.1 估值概览（四维PE强制披露 + PB-ROE矩阵）</div>
+  <table>
+    <thead><tr><th>估值指标</th><th>当前值</th><th>分位说明</th><th>口径说明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>P/E (TTM报表)</b></td>
+        <td class="val-neutral">-12.51x</td>
+        <td>N/A — 亏损公司</td>
+        <td>①计算口径：归母净利润(TTM) ②来源：公司2025A年报 ③公式：总市值÷LTM归母净利润 ④截止日：2026-04-27</td>
+      </tr>
+      <tr>
+        <td><b>P/E (TTM扣非)</b></td>
+        <td class="val-neutral">-12.51x</td>
+        <td>N/A — 亏损公司</td>
+        <td>①口径：扣非归母净利润LTM（无重大非经常性损益）②同① ③同① ④同①；<b>买方首选口径，但公司亏损，PE无参考意义</b></td>
+      </tr>
+      <tr>
+        <td><b>P/E (FWD FY+1)</b></td>
+        <td class="val-neutral">无法估算</td>
+        <td>无分析师一致预期覆盖</td>
+        <td>港股18A未盈利 biotech，无共识盈利预测</td>
+      </tr>
+      <tr>
+        <td><b>P/B (LF)</b></td>
+        <td class="val-neutral">11.74x</td>
+        <td>处于历史较高水平（账面净资产¥3.55/股）</td>
+        <td>①口径：最新净资产 ②来源：2025A年报（截至2025-12-31） ③公式：HK$46.12×总股本÷净资产 ④截止日：2026-04-27</td>
+      </tr>
+      <tr>
+        <td><b>EV/EBITDA</b></td>
+        <td class="val-neutral">无法估算</td>
+        <td>—</td>
+        <td>公司EBITDA为负，不适用</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">5.1.1 PB-ROE 矩阵判定</div>
+  <p style="font-size:13px;margin-bottom:12px;">
+    <b>P/B = ROE × P/E 框架：</b>若ROE > r（假设r=10%），则P/B应>1，公司在创造价值；若ROE < r，则P/B应<1（破净有理论依据）。
+  </p>
+  <table>
+    <thead><tr><th>公司</th><th>P/B(LF)</th><th>ROE(LTM)</th><th>ROE vs r(10%)</th><th>象限定位</th><th>投资含义</th></tr></thead>
+    <tbody>
+      <tr><td><b>亚盛医药(6855)</b></td><td class="val-neutral">11.74x</td><td class="val-negative">-156%</td><td class="val-negative">ROE << r</td><td>🔴 低ROE + 高PB象限</td><td>市场对耐立克管线给予管线期权价值溢价，但当前财务ROE极低，P/B偏高</td></tr>
+      <tr><td>百济神州(6160)</td><td class="val-neutral">~8x</td><td class="val-negative">-40%</td><td class="val-negative">ROE < r</td><td>🔴 低ROE + 高PB</td><td>同样高PB但ROE为负，反映市场对增长前景的预期</td></tr>
+      <tr><td>康方生物(9926)</td><td class="val-neutral">~6x</td><td class="val-negative">-40%</td><td class="val-negative">ROE < r</td><td>🔴 低ROE + 中PB</td><td>商业化进度领先，PB略低于亚盛</td></tr>
+      <tr><td>信达生物(1801)</td><td class="val-neutral">~7x</td><td class="val-negative">-35%</td><td class="val-negative">ROE < r</td><td>🔴 低ROE + 中PB</td><td>PD-1商业化成熟，PB略低于亚盛</td></tr>
+    </tbody>
+  </table>
+  <p class="text-gray" style="font-size:12px;margin-top:8px;">
+    <b>核心判断：</b>亚盛医药处于"低ROE + 高PB"象限，这是biotech公司的普遍特征——市场定价的是管线未来潜在的ROE，而非当前财务表现。P/B 11.74x在同业中处于偏高水平，意味着市场对耐立克管线的期权价值给予了较高溢价。但2025年营收大幅下滑后，这一溢价面临重新定价压力。
+  </p>
+
+  <div class="section-title">5.2 相对估值对标（亏损 biotech 适用 P/B + 管线价值评估）</div>
+  <table>
+    <thead><tr><th>公司</th><th>市值（亿港元）</th><th>P/B</th><th>ROE</th><th>管线阶段</th><th>PB-ROE评价</th></tr></thead>
+    <tbody>
+      <tr><td><b>亚盛医药(6855)</b></td><td class="val-neutral">172.2</td><td class="val-neutral">11.74x</td><td class="val-negative">-156%</td><td>1个上市产品+多个临床管线</td><td>折价（管线价值未如预期释放）</td></tr>
+      <tr><td>康方生物(9926)</td><td>~550</td><td>~6x</td><td class="val-negative">-40%</td><td>5个商业化产品，双抗平台</td><td>折价（商业化更成熟）</td></tr>
+      <tr><td>百济神州(6160)</td><td>~2,800</td><td>~8x</td><td class="val-negative">-40%</td><td>全球化商业化，多产品矩阵</td><td>溢价（规模+全球化溢价）</td></tr>
+      <tr><td>信达生物(1801)</td><td>~1,000</td><td>~7x</td><td class="val-negative">-35%</td><td>多个商业化产品，BD能力强</td><td>折价（商业化成熟但增速放缓）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">5.3 DCF估值（参考，适用于管线期权价值评估）</div>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">
+    <b>⚠️ 重要前提：</b>DCF对未盈利 biotech 公司的估值能力有限，DCF结果更多反映"清算价值"而非"管线期权价值"。以下DCF仅作为安全边际估算的参考。
+  </p>
+  <table>
+    <thead><tr><th>情景</th><th>核心假设</th><th>每股内在价值估算（港元）</th><th>vs现价HK$46.12</th><th>概率权重</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="val-positive">🟢 乐观</td>
+        <td>耐立克峰值销售¥18亿（2028-2030年）；新适应症顺利获批；成功重新授权海外权益（首付款+里程碑约HK$15-20亿）</td>
+        <td class="val-positive">~HK$58-65</td>
+        <td class="val-positive">+26%~+41%</td>
+        <td>20%</td>
+      </tr>
+      <tr>
+        <td class="val-neutral">🟡 中性（基准）</td>
+        <td>耐立克峰值销售¥12亿（国内CML市场）；新适应症2027-2028年获批；无海外授权（自建美国商业化）</td>
+        <td class="val-neutral">~HK$38-45</td>
+        <td class="val-negative">-9%~+1%</td>
+        <td>50%</td>
+      </tr>
+      <tr>
+        <td class="val-negative">🔴 悲观</td>
+        <td>耐立克国内销售受竞品挤压（峰值¥6亿）；医保续约降价30-40%；管线临床失败（APG-2575等）</td>
+        <td class="val-negative">~HK$22-28</td>
+        <td class="val-negative">-40%~-52%</td>
+        <td>30%</td>
+      </tr>
+      <tr>
+        <td><b>概率加权期望值</b></td><td>—</td><td class="val-neutral"><b>~HK$40-44</b></td><td class="val-negative"><b>-4%~-13%</b></td><td>100%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">5.4 红旗评分</div>
+  <table>
+    <thead><tr><th>#</th><th>红旗信号</th><th>严重程度</th><th>量化证据</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>武田授权终止</td><td class="val-negative">高</td><td>2024年Q4武田退回olverembatinib除中国外全球权益，一次性授权收入归零</td></tr>
+      <tr><td>2</td><td>营收高度不稳定</td><td class="val-negative">高</td><td>2025年营收同比-41.5%，商业模式单一脆弱</td></tr>
+      <tr><td>3</td><td>持续经营现金流入不敷出</td><td class="val-neutral">中</td><td>2023-2024年OCF持续为负，完全依赖融资</td></tr>
+      <tr><td>4</td><td>管理层商业化经验相对欠缺</td><td class="val-neutral">中</td><td>biotech背景，2024年销售费用增长81%但收入下降，人效待验证</td></tr>
+    </tbody>
+  </table>
+  <p class="text-gray" style="font-size:12px;margin-top:8px;">
+    <b>红旗评分：4个红旗 → 建议给予DCF估值折价 -15%~-25%；投资评级下调至中性</b>
+  </p>
+
+  <!-- ════════════════════ M6 ════════════════════ -->
+  <div class="module-title">
+    <span class="tag">M6</span>
+    风险矩阵与下行保护
+  </div>
+
+  <div class="section-title">6.1 核心风险矩阵</div>
+  <div class="risk-card high">
+    <div class="risk-title">
+      风险1：商业化失败风险（武田授权终止后遗症）
+      <span class="risk-badge high">高概率 | 高冲击</span>
+    </div>
+    <div class="risk-desc">
+      武田制药于2024年Q4终止olverembatinib除中国外全球权益授权，公司被迫接回全球权益并自建海外商业化团队。这一事件意味着：①短期授权金归零；②全球商业化不确定性大幅增加；③海外临床投入的ROI面临重新评估。
+    </div>
+    <div class="risk-impact">业绩冲击：-30%营收（对应武田授权部分）；估值冲击：-20%~-35%</div>
+  </div>
+  <div class="risk-card high">
+    <div class="risk-title">
+      风险2：耐立克国内销售持续下滑风险
+      <span class="risk-badge high">中概率 | 高冲击</span>
+    </div>
+    <div class="risk-desc">
+      2025年营收同比-41.5%，武田授权终止是原因之一，但更值得关注的是：①CML-TKI竞争加剧（一代、二代、三代均有仿制药/原研药竞争）；②2024年医保谈判后价格下降约40-50%（从约5000元/盒降至约2500-3000元/盒）；③医院覆盖速度可能放缓。
+    </div>
+    <div class="risk-impact">业绩冲击：-20%~-40%营收；估值冲击：-15%~-25%</div>
+  </div>
+  <div class="risk-card medium">
+    <div class="risk-title">
+      风险3：现金消耗与融资稀释风险
+      <span class="risk-badge medium">高概率 | 中冲击</span>
+    </div>
+    <div class="risk-desc">
+      按当前现金消耗速度（研发¥11.4亿+商业化¥3.5亿+行政¥2.5亿≈¥17-18亿/年），账面¥24.7亿仅能支撑约1.5年。2026-2027年将面临融资窗口，若资本市场环境不佳（如港股流动性收紧），融资条款可能对现有股东造成显著稀释。
+    </div>
+    <div class="risk-impact">估值冲击：股权稀释15-25%（假设融资10亿港元，按现价折让20-30%发行）</div>
+  </div>
+  <div class="risk-card medium">
+    <div class="risk-title">
+      风险4：管线临床失败/延期风险
+      <span class="risk-badge medium">低概率 | 极高冲击</span>
+    </div>
+    <div class="risk-desc">
+      APG-2575（BCL-2抑制剂，全球进度领先）、APG-1252（Bcl-2/xL）等关键管线仍在临床阶段。若主要临床数据不达预期或出现安全性问题，将对公司长期价值造成根本性冲击。
+    </div>
+    <div class="risk-impact">估值冲击：-40%~-60%（管线价值重估）</div>
+  </div>
+
+  <div class="section-title">6.2 极端情景压力测试</div>
+  <table>
+    <thead><tr><th>情景</th><th>假设条件</th><th>调整后净利</th><th>vs现价变动</th><th>概率</th></tr></thead>
+    <tbody>
+      <tr><td><b>基准</b></td><td>正常运营，耐立克销售维持¥5-6亿/年</td><td>-¥12亿（亏损）</td><td>—</td><td>最可能</td></tr>
+      <tr><td><b>温和下行</b></td><td>耐立克销售受竞品挤压降至¥4亿；研发费用压缩10%</td><td>-¥14亿</td><td class="val-negative">-20%~-25%</td><td>30%</td></tr>
+      <tr><td><b>严重衰退</b></td><td>耐立克销售腰斩至¥2.5亿；融资困难；管线临床部分失败</td><td>-¥18亿</td><td class="val-negative">-40%~-50%</td><td>15%</td></tr>
+      <tr><td><b>极端黑天鹅</b></td><td>被迫出售核心资产/管线；管理层动荡；港股流动性枯竭</td><td>清算价值</td><td class="val-negative">-60%~-70%</td><td><5%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">6.3 下行保护机制评估</div>
+  <table>
+    <thead><tr><th>保护层</th><th>内容</th><th>有效程度</th></tr></thead>
+    <tbody>
+      <tr><td><b>估值保护</b></td><td>P/B 11.74x处于同业中偏高水平，但 biotech P/B本身不是硬底，生物科技公司清算价值通常为账面净资产的20-40%</td><td>★★☆☆☆</td></tr>
+      <tr><td><b>资产负债表保护</b></td><td>净现金¥24.7亿 / 市值172亿港元（约占14%），比例尚可；无有息负债</td><td>★★★☆☆</td></tr>
+      <tr><td><b>业务韧性</b></td><td>耐立克已进入医保，国内患者刚需较强；CML耐药患者对第三代TKI需求稳定，即使销售不及预期也不会归零</td><td>★★★☆☆</td></tr>
+      <tr><td><b>管线兜底</b></td><td>APG-2575等管线即便失败，耐立克的国内商业价值仍存，作为被收购标的的价值</td><td>★★☆☆☆</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 最终投资结论 -->
+  <div class="conclusion-box">
+    <h2>【最终投资结论】</h2>
+    <div class="rating-row">
+      <div class="rating-badge">中性（Hold）</div>
+      <div class="rating-detail">
+        <b>目标价：</b>HK$42-58（12个月）<br>
+        <b>当前价：</b>HK$46.12（2026-04-27）<br>
+        <span class="upside">上涨空间（乐观）：+26%</span> | <span class="downside">下跌空间（悲观）：-40%</span>
+      </div>
+    </div>
+    <h3>核心投资逻辑（3句话）：</h3>
+    <ul>
+      <li><b>①</b> 耐立克（奥雷巴替尼）是国内唯一自研第三代BCR-ABL抑制剂，CML耐药患者刚需强，峰值销售空间¥15-20亿，当前¥5.5亿仍有显著爬坡空间；</li>
+      <li><b>②</b> 武田授权终止短期利空，但公司接回全球权益后拥有重新授权期权，若海外临床数据积极（2026-2027年关键数据读出）有望带来重估机会；</li>
+      <li><b>③</b> 2025年营收大幅下滑（-41.5%）暴露商业模式脆弱性，加上高研发投入（¥11.4亿）持续消耗现金，¥24.7亿储备仅够支撑约1.5-2年，融资摊薄风险不可忽视。</li>
+    </ul>
+    <h3>上行催化剂 vs 下行风险：</h3>
+    <ul>
+      <li><span class="upside">▲ 催化剂：</span>耐立克2026年医保续约价格好于预期；APG-2575关键临床数据积极；成功重新授权海外权益（首付款+里程碑）；国内销售环比持续改善</li>
+      <li><span class="downside">▼ 风险：</span>2026年中报销售继续下滑；融资窗口收紧导致被迫折价融资；竞品（三代TKI）获批后价格体系进一步下压；临床失败</li>
+    </ul>
+    <div class="warning">
+      <b>不适合：</b>追求短期绝对收益、无法承受港股 biotech 高波动性、无法接受股权稀释风险的投资者。<br>
+      <b>适合：</b>具备biotech投资经验、能承受-40%以内回撤、看好CML-TKI赛道长期空间和管线期权价值的长线投资者。
+    </div>
+  </div>
+
+  <!-- 免责声明 -->
+  <div class="footer-disclaimer">
+    <b>免责声明：</b>本报告为内部投研材料，仅供参考，不构成任何投资建议或买卖决策依据。报告内容基于公开信息整理分析，不保证数据完整性与准确性，不承担任何因信息不完整或分析偏差导致的任何投资损失。港股biotech公司具有高风险特征，历史业绩不代表未来表现。请投资者独立评估风险，审慎决策。
+  </div>
+
+  <div class="footer">
+    报告生成日期：2026-04-27 | 数据来源：公司年报、NeoData金融终端、公开信息整理<br>
+    本报告仅供内部研究使用，请勿对外传播
+  </div>
+</div>
+
+<script>
+// ─── Chart.js 全局配置 ───
+Chart.defaults.font.family = "-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#424242';
+Chart.defaults.plugins.datalabels.display = true;
+Chart.defaults.plugins.datalabels.textStrokeColor = '#fff';
+Chart.defaults.plugins.datalabels.textStrokeWidth = 2;
+
+const navy = 'rgba(26,35,126,1)';
+const blue = 'rgba(40,53,147,1)';
+const accent = 'rgba(198,40,40,1)';
+const green = 'rgba(46,125,50,1)';
+const gold = 'rgba(255,143,0,1)';
+const gray = 'rgba(117,117,117,1)';
+const navyFill = 'rgba(26,35,126,0.08)';
+const blueFill = 'rgba(40,53,147,0.08)';
+const greenFill = 'rgba(46,125,50,0.08)';
+const redFill = 'rgba(198,40,40,0.08)';
+
+// ─── C1: 营收结构饼图 ───
+(function() {
+  var ctx = document.getElementById('chartRevenueMix');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['耐立克国内商业化', '武田授权终止一次性款', '其他合作收入'],
+      datasets: [{
+        data: [5.5, 0, 0.24],
+        backgroundColor: [navy, gold, gray],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      cutout: '55%',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' },
+        datalabels: {
+          formatter: function(v, ctx) {
+            var total = ctx.dataset.data.reduce(function(a,b){return a+b;},0);
+            if(total==0) return '0%';
+            var pct = (v/total*100).toFixed(1);
+            return pct + '%';
+          },
+          color: '#fff', font: { weight: 'bold', size: 11 }
+        }
+      }
+    }
+  });
+})();
+
+// ─── C2: 营收与净利润趋势 ───
+(function() {
+  var ctx = document.getElementById('chartRevenueProfit');
+  if (!ctx) return;
+  new Chart(ctx, {
+    data: {
+      labels: ['2021A','2022A','2023A','2024A','2025A'],
+      datasets: [
+        {
+          type: 'bar',
+          label: '营业收入(亿元)',
+          data: [0.28, 1.25, 2.22, 9.81, 5.74],
+          backgroundColor: blue,
+          borderWidth: 0,
+          yAxisID: 'yRevenue',
+          datalabels: { align: 'end', anchor: 'end', color: blue, formatter: function(v){return v.toFixed(1);} }
+        },
+        {
+          type: 'line',
+          label: '归母净利润(亿元)',
+          data: [-7.82, -6.78, -9.26, -4.05, -12.43],
+          borderColor: accent,
+          backgroundColor: accent,
+          borderWidth: 2,
+          tension: 0.25,
+          pointRadius: 4,
+          yAxisID: 'yProfit',
+          datalabels: { align: 'top', color: accent, formatter: function(v){return v.toFixed(1);} }
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        yRevenue: { type: 'linear', position: 'left', title: { display: true, text: '营收(亿元)' }, min: 0, max: 12 },
+        yProfit: { type: 'linear', position: 'right', title: { display: true, text: '净利润(亿元)' }, min: -15, max: 0, grid: { drawOnChartArea: false } }
+      },
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+})();
+
+// ─── C3A: 同业盈利能力对比 ───
+(function() {
+  var ctx = document.getElementById('chartCompareProfit');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['毛利率', '净利率', 'ROE(%)'],
+      datasets: [
+        { label: '亚盛医药', data: [91.5, -216.5, -156], backgroundColor: navy, borderWidth: 0 },
+        { label: '康方生物', data: [88, -36, -40], backgroundColor: blue, borderWidth: 0 },
+        { label: '百济神州', data: [82, -15, -40], backgroundColor: gold, borderWidth: 0 },
+        { label: '信达生物', data: [80, -20, -35], backgroundColor: green, borderWidth: 0 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        y: { beginAtZero: true, max: 100 }
+      }
+    }
+  });
+})();
+
+// ─── C3B: 同业P/B估值对比 ───
+(function() {
+  var ctx = document.getElementById('chartComparePB');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['P/B(倍)'],
+      datasets: [
+        { label: '亚盛医药', data: [11.74], backgroundColor: navy, borderWidth: 0 },
+        { label: '康方生物', data: [6], backgroundColor: blue, borderWidth: 0 },
+        { label: '百济神州', data: [8], backgroundColor: gold, borderWidth: 0 },
+        { label: '信达生物', data: [7], backgroundColor: green, borderWidth: 0 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        y: { beginAtZero: true, max: 14 }
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>
